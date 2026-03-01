@@ -16,33 +16,52 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        // TODO 1: Build a title banner using strings
-        // Create variables for:
-        // - title: "Text Menu Studio"
-        // - subtitle: "Strings + Console Output Patterns"
-        // - divider: 48 equals signs (hint: use new string() constructor)
-        // Display: divider, title in uppercase, subtitle, divider
 
+        string title = "Text Menu Studio";
+        string subtitle = "Strings + Console Output Patterns";
+        string divider = new string('=', 48);
+        Console.WriteLine(divider);
+        Console.WriteLine(title.ToUpper());
+        Console.WriteLine(subtitle);
+        Console.WriteLine(divider);
         int choice = 0;
 
-        // TODO 2: Create a menu loop that repeats until user chooses 6 (Exit)
-        // Hint: Use a while loop
+
+        while (choice != 6)
         {
-            // TODO 3: Print the menu box
-            // Required menu option texts (tests check for these):
-            // - 1) Greeting Card
-            // - 2) Name Tag Formatter
-            // - 3) Phrase Analyzer
-            // - 4) Fancy Receipt Line
-            // - 5) Menu Banner Builder
-            // - 6) Exit
+
+            Console.WriteLine("1) Greeting Card");
+            Console.WriteLine("2) Name Tag Formatter");
+            Console.WriteLine("3) Phrase Analyzer");
+            Console.WriteLine("4) Fancy Receipt Line");
+            Console.WriteLine("5) Menu Banner Builder");
+            Console.WriteLine("6) Exit");
 
             // TODO 4: Get menu choice from user
             // Use ReadIntInRange helper with prompt: "Choose an option (1-6): "
             // Range: 1 to 6
-
+            choice = ReadIntInRange("Choose an option (1-6): ", 1, 6);
             // TODO 5: Use a switch statement to handle each menu option
+            switch(choice)
+            {
 
+                case 1:
+                     Console.WriteLine("===== OPTION 1: Greeting Card =====");
+                     Console.WriteLine("Enter your name: ");
+                     string name = Console.ReadLine().Trim();
+
+                     Console.Write("Enter a short message: ");
+                     string message = Console.ReadLine();
+
+                     string upperName = name.ToUpper();
+                     string border = new string('*', 40);
+
+                     Console.WriteLine(border);
+                     Console.WriteLine(string.Format("Hello, {0}!", name));
+                     Console.WriteLine("Uppercase Name: " + upperName);
+                     Console.WriteLine("Message: " + message);
+                     Console.WriteLine(border);
+                     break;
             // ===== OPTION 1: Greeting Card =====
             // Prompts: "Enter your name: " and "Enter a short message: "
             // Required string operations:
@@ -53,7 +72,30 @@ public class Program
             // - Display a boxed card with the name, uppercase name, and message
             // Include the word "Message:" in your output
 
-            // ===== OPTION 2: Name Tag Formatter =====
+                case 2:
+                    Console.WriteLine("===== OPTION 2: Name Tag Formatter =====");
+                    Console.WriteLine("Enter first name: ");
+                    string first = Console.ReadLine().Trim();
+
+                    Console.Write("Enter last name: ");
+                    string last = Console.ReadLine().Trim();
+
+                    string fullName = first + " " + last;
+
+                    char firstInitial = first[0];
+                    char lastInitial = last[0];
+
+                    string initials = char.ToUpper(firstInitial).ToString() +
+                    char.ToUpper(lastInitial).ToString();
+
+                    string lower = fullName.ToLower();
+
+                    Console.WriteLine("[ " + fullName + " ]");
+                    Console.WriteLine("Initials: " + initials);
+                    Console.WriteLine("Lowercase: " + lower);
+
+                    break;
+             // ===== OPTION 2: Name Tag Formatter =====
             // Prompts: "Enter first name: " and "Enter last name: "
             // Required string operations:
             // - Use Trim() on both inputs
@@ -65,7 +107,29 @@ public class Program
             // - Name tag with the full name (include a bracket [)
             // - Initials (use word "Initials:" in label)
             // - Lowercase version (use word "Lowercase:" in label)
+                case 3:
+                Console.WriteLine("===== OPTION 3: Phrase Analyzer =====");
+                Console.WriteLine("Enter a phrase: ");
+                string phrase = Console.ReadLine().Trim();
 
+                int length = phrase.Length;
+
+                bool containsA = phrase.ToLower().Contains("a");
+
+                string dashed = phrase.Replace(" ", "-");
+
+                string[] words = phrase.Split(' ');
+                string wordList = string.Join(", ", words);
+
+                Console.WriteLine("Length: " + length);
+                if(containsA)
+                {
+                Console.WriteLine("Does contain a");
+                }
+
+                Console.WriteLine("Dashed version: " + dashed);
+                Console.WriteLine("Words: " + wordList);
+                break;
             // ===== OPTION 3: Phrase Analyzer =====
             // Prompt: "Enter a phrase: "
             // Required string operations:
@@ -77,6 +141,22 @@ public class Program
             // - Use string.Join() to create comma-separated list
             // Display: length, contains check, dashed version, and words list
 
+                case 4:
+                Console.WriteLine("===== OPTION 4: Fancy Receipt Line =====");
+
+                Console.Write("Enter item name: ");
+                string item = Console.ReadLine();
+
+                double price = ReadDouble("Enter price: ");
+                int qty = ReadIntInRange("Enter quantity (1-9): ", 1, 9);
+
+                double total = price * qty;
+
+                Console.WriteLine();
+                Console.WriteLine(string.Format("{0,-15}{1,5}{2,10}", "ITEM", "QTY", "TOTAL"));
+                Console.WriteLine(string.Format("{0,-15}{1,5}{2,10:C2}", item, qty, total));
+
+                  break;
             // ===== OPTION 4: Fancy Receipt Line =====
             // Prompts: "Enter item name: ", "Enter price: ", "Enter quantity (1-9): "
             // Use ReadDouble for price and ReadIntInRange for quantity
@@ -87,7 +167,45 @@ public class Program
             // - Use alignment specifiers (left/right alignment)
             // - Use currency format specifier (:C2) for the total
 
-            // ===== OPTION 5: Menu Banner Builder =====
+                case 5:
+                    Console.WriteLine("===== OPTION 5: Menu Banner Builder =====");
+
+
+                    Console.Write("Enter a title: ");
+                    string bannerTitle = Console.ReadLine().Trim();
+
+                    Console.Write("Enter a subtitle: ");
+                    string bannerSubtitle = Console.ReadLine().Trim();
+
+                    int width = ReadIntInRange("Enter width (30-60): ", 30, 60);
+
+
+                    string BannerBorder = new string('=', width);
+
+
+                    string upperTitle = bannerTitle.ToUpper();
+                    string centeredTitle = upperTitle.PadLeft((width + upperTitle.Length) / 2);
+
+                    string centeredSubtitle = bannerSubtitle.PadLeft((width + bannerSubtitle.Length) / 2);
+
+
+                    Console.WriteLine();
+                    Console.WriteLine(BannerBorder);
+                    Console.WriteLine(centeredTitle);
+                    Console.WriteLine(centeredSubtitle);
+                    Console.WriteLine(BannerBorder);
+                    Console.WriteLine();
+
+                    string leftAligned = "Center".PadRight(width);
+                    string rightAligned = "Left aligned".PadLeft(width);
+                    string centerAligned = "Right aligned".PadLeft((width + bannerSubtitle.Length) / 2);
+
+                    Console.WriteLine("Center aligned: [" + centerAligned + "]");
+                    Console.WriteLine("Left aligned:   [" + leftAligned + "]");
+                    Console.WriteLine("Right aligned:  [" + rightAligned + "]");
+
+                break;
+// ===== OPTION 5: Menu Banner Builder =====
             // Prompts: "Enter a title: ", "Enter a subtitle: ", "Enter width (30-60): "
             // Use ReadIntInRange for width (min=30, max=60)
             // Required string operations:
@@ -96,6 +214,36 @@ public class Program
             // - Use ToUpper() on title
             // - Display banner with borders and centered text
             // - Show three alignment examples (centered, left, right)
+
+                case 6:
+                     Console.WriteLine("===== OPTION 6: Exit with String Analysis =====");
+                     Console.Write("Enter a closing word: ");
+                     string closingWord = Console.ReadLine().Trim();
+
+                     bool isGoodbye = closingWord.Equals("goodbye", StringComparison.OrdinalIgnoreCase);
+                     Console.WriteLine("Equals 'goodbye': " + isGoodbye);
+
+                     string firstThree = closingWord.Length >= 3 ? closingWord.Substring(0, 3) : closingWord;
+                     Console.WriteLine("First 3 characters: " + firstThree);
+
+                     bool endsWithExclamation = closingWord.EndsWith("!");
+                     Console.WriteLine("Ends with '!': " + endsWithExclamation);
+
+                     int spaceIndex = closingWord.IndexOf(' ');
+                     Console.WriteLine("Index of first space: " + spaceIndex);
+
+                     Console.WriteLine("Goodbye!");
+                     break;
+            }
+
+
+
+
+
+
+
+
+
 
             // ===== OPTION 6: Exit with String Analysis =====
             // Prompt: "Enter a closing word: "
@@ -117,17 +265,74 @@ public class Program
         // Use a do-while loop with int.TryParse()
         // Keep prompting until input is valid AND within range
         // Return the valid number
+        int number;
+        bool isValid;
 
-        return min; // Remove this placeholder
+        do
+        {
+            Console.WriteLine(prompt);
+            string input = Console.ReadLine();
+
+            isValid = int.TryParse(input, out number);
+            if (!isValid || number < min || number > max)
+            {
+                Console.WriteLine($"Please enter a number between {min} and {max}.");
+            }
+        } while (!isValid || number < min || number > max);
+
+        return number;
     }
 
     private static double ReadDouble(string prompt)
     {
+        double result;
+        bool isValid;
+
+       do
+       {
+         Console.Write(prompt);
+         string input = Console.ReadLine();
+
+        isValid = double.TryParse(input, out result);
+
+         if (!isValid)
+         {
+            Console.WriteLine("Invalid number. Please try again.");
+         }
+
+        } while (!isValid);
+
+    return result;
         // TODO 8: Implement input validation
         // Use a do-while loop with double.TryParse()
         // Keep prompting until input is a valid number
         // Return the valid number
 
-        return 0; // Remove this placeholder
     }
 }
+
+
+
+
+            // TODO 1: Build a title banner using strings
+            // Create variables for:
+            // - title: "Text Menu Studio"
+            // - subtitle: "Strings + Console Output Patterns"
+            // - divider: 48 equals signs (hint: use new string() constructor)
+            // Display: divider, title in uppercase, subtitle, divider
+
+            // TODO 2: Create a menu loop that repeats until user chooses 6 (Exit)
+            // Hint: Use a while loop
+
+            // TODO 3: Print the menu box
+            // Required menu option texts (tests check for these):
+            // - 1) Greeting Card
+            // - 2) Name Tag Formatter
+            // - 3) Phrase Analyzer
+            // - 4) Fancy Receipt Line
+            // - 5) Menu Banner Builder
+            // - 6) Exit
+
+             // TODO 4: Get menu choice from user
+            // Use ReadIntInRange helper with prompt: "Choose an option (1-6): "
+            // Range: 1 to 6
