@@ -3,7 +3,7 @@
 - Instructor: Zak Brinlee
 - Term: Winter 2026
 -
-- Programmer: YourName
+- Programmer: Ethan
 - Assignment: Week 8: Mad Libs (Structure + Debugging)
 -
 - What does this program do?:
@@ -53,7 +53,49 @@ public class Program
     // - Return the appropriate StoryTemplate (see template details in README)
     private static StoryTemplate ChooseTemplate()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("1) Debugging at the Zoo");
+        Console.WriteLine("2) The Standup Meeting");
+        int choice = ReadIntInRange("Choose a template (1-2): ", 1, 2);
+
+        if (choice == 1)
+        {
+            return new StoryTemplate("Debugging at the Zoo", new string[]
+            {
+                "Enter an adjective: ",
+                "Enter an animal (plural): ",
+                "Enter a verb ending in -ing: ",
+                "Enter a programming language: ",
+                "Enter a debugging tool (example: breakpoint): ",
+                "Enter a number: ",
+                "Enter an emotion: ",
+                "Enter an exclamation: "
+            },
+            "Today I visited the {0} zoo. I saw {1} {2} while writing {3}. " +
+            "I used a {4} {5} times until the bug disappeared. " +
+            "I felt {6} and yelled, \"{7}!\""
+            );
+        }
+        else
+        {
+            return new StoryTemplate(
+            "The Standup Meeting",
+            new string[]
+            {
+                "Enter a name: ",
+                "Enter an adjective: ",
+                "Enter a noun: ",
+                "Enter a verb (past tense): ",
+                "Enter a number: ",
+                "Enter a plural noun: ",
+                "Enter a type of bug (example: null reference): ",
+                "Enter a snack: "
+            },
+            "During today's standup, {0} felt {1} about the {2}. " +
+            "They {3} {4} times while discussing {5}. " +
+            "The team fixed a {6} bug and celebrated with {7}."
+        );
+        }
+
     }
 
     // TODO 3: Implement CollectWords
@@ -65,8 +107,16 @@ public class Program
     // - Return the array of collected words
     private static string[] CollectWords(StoryTemplate template)
     {
-        throw new NotImplementedException();
+        Logger.Info($"Collecting {template.Prompts.Length} words for: {template.Title}");
+        string[] words = new string[template.Prompts.Length];
+        for (int i = 0; i < template.Prompts.Length; i++)
+        {
+            words[i] = ReadNonEmptyString(template.Prompts[i]);
+        }
+        Console.WriteLine();
+        return words;
     }
+
 
     // TODO 4: Implement ReadYesNo
     // This method should:
@@ -78,7 +128,19 @@ public class Program
     // - Return true for "y", false for "n"
     private static bool ReadYesNo(string prompt)
     {
-        throw new NotImplementedException();
+        while (true)
+        {
+            Console.Write(prompt);
+            string input = (Console.ReadLine() ?? string.Empty).Trim();
+            if (input.Equals("y", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            if (input.Equals("n", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+        }
     }
 
     // TODO 5: Implement ReadIntInRange
@@ -91,7 +153,20 @@ public class Program
     // - Return the valid integer
     private static int ReadIntInRange(string prompt, int min, int max)
     {
-        throw new NotImplementedException();
+        int number;
+        bool isValid;
+        do
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine() ?? string.Empty;
+
+            isValid = int.TryParse(input, out number)
+                  && number >= min
+                  && number <= max;
+        }
+        while (!isValid);
+        return number;
+
     }
 
     // TODO 6: Implement ReadNonEmptyString
@@ -103,6 +178,15 @@ public class Program
     // - Return the valid non-empty string
     private static string ReadNonEmptyString(string prompt)
     {
-        throw new NotImplementedException();
+        while (true)
+        {
+            Console.Write(prompt);
+            string input = (Console.ReadLine() ?? string.Empty).Trim();
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                return input;
+            }
+        }
+
     }
 }
