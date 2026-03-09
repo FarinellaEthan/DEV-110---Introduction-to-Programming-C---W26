@@ -41,7 +41,14 @@ internal class ScoreReport
     // - Call PrintFailingScores()
     public void PrintReport()
     {
-        throw new NotImplementedException();
+        PrintBasicStats();
+        PrintPassingFailingCounts();
+        Console.WriteLine();
+        PrintScoresSorted();
+        PrintTopScores(3);
+        PrintPassingScores();
+        PrintFailingScores();
+
     }
 
     // TODO 2: Implement PrintBasicStats
@@ -56,7 +63,14 @@ internal class ScoreReport
     //   Average: X.X  (format to 1 decimal place using CultureInfo.InvariantCulture)
     private void PrintBasicStats()
     {
-        throw new NotImplementedException();
+        int min = _scores.Min();
+        int max = _scores.Max();
+        double avg = _scores.Average();
+
+        Console.WriteLine($"Count: {Count}");
+        Console.WriteLine($"Min: {min}");
+        Console.WriteLine($"Max: {max}");
+        Console.WriteLine($"Average: {avg.ToString("F1", CultureInfo.InvariantCulture)}");
     }
 
     // TODO 3: Implement PrintPassingFailingCounts
@@ -68,7 +82,10 @@ internal class ScoreReport
     //   Failing (<threshold): X
     private void PrintPassingFailingCounts()
     {
-        throw new NotImplementedException();
+        int passing = _scores.Count(score => score >= Threshold);
+        int failing = _scores.Count(score => score < Threshold);
+        Console.WriteLine($"Passing (>=threshold): {passing}");
+        Console.WriteLine($"Failing (<threshold): {failing}");
     }
 
     // TODO 4: Implement PrintScoresSorted
@@ -78,7 +95,8 @@ internal class ScoreReport
     // - Print exactly: Sorted (asc): 10, 20, 30
     private void PrintScoresSorted()
     {
-        throw new NotImplementedException();
+        var sorted = _scores.OrderBy(score => score);
+        Console.WriteLine($"Sorted (asc): {string.Join(", ", sorted)}");
     }
 
     // TODO 5: Implement PrintTopScores
@@ -88,7 +106,8 @@ internal class ScoreReport
     // - Print exactly: Top X: 30, 20, 10
     private void PrintTopScores(int topCount)
     {
-        throw new NotImplementedException();
+        var top = _scores.OrderByDescending(score => score).Take(topCount);
+        Console.WriteLine($"Top {topCount}: {string.Join(", ", top)}");
     }
 
     // TODO 6: Implement PrintPassingScores
@@ -98,7 +117,11 @@ internal class ScoreReport
     // - Print exactly: Passing scores (desc): 30, 20
     private void PrintPassingScores()
     {
-        throw new NotImplementedException();
+        var passingScores = _scores
+       .Where(score => score >= Threshold)
+       .OrderByDescending(score => score);
+
+        Console.WriteLine($"Passing scores (desc): {string.Join(", ", passingScores)}");
     }
 
     // TODO 7: Implement PrintFailingScores
@@ -108,6 +131,10 @@ internal class ScoreReport
     // - Print exactly: Failing scores (desc): 10
     private void PrintFailingScores()
     {
-        throw new NotImplementedException();
+        var failingScores = _scores
+        .Where(score => score < Threshold)
+        .OrderByDescending(score => score);
+
+        Console.WriteLine($"Failing scores (desc): {string.Join(", ", failingScores)}");
     }
 }
