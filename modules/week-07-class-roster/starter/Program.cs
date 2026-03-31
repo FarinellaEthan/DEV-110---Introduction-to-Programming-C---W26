@@ -25,47 +25,117 @@ public class Program
         // - int[] rosterCredits
         // Also create an int named count and set it to 0
         // Meaning: the first 0 slots are in use
-
+        int rosterCapacity = 3;
+        int count = 0;
         int choice = 0;
-
+        string[] rosterNames = new string[3];
+        int[] rosterCredits = new int[3];
         // TODO 2: Create a menu loop that repeats until the user chooses 4 (Exit)
         // Hint: while (choice != 4) { ... }
+        // Print the menu options (every loop)
+
+        // TODO 3: Get the menu choice using ReadIntInRange
+        // Prompt: "Choose an option: "
+        // Range: 1 to 4
+
+        while (choice != 4)
         {
-            // Print the menu options (every loop)
+
+            Console.WriteLine("");
             Console.WriteLine("1) Add multiple students");
             Console.WriteLine("2) Print class roster");
             Console.WriteLine("3) Print roster (sorted)");
             Console.WriteLine("4) Exit");
 
-            // TODO 3: Get the menu choice using ReadIntInRange
-            // Prompt: "Choose an option: "
-            // Range: 1 to 4
+
+            choice = ReadIntInRange("Choose an option: ", 1, 4);
+
+
 
             // TODO 4: Use a switch statement to handle choices 1-4
 
-            // ===== OPTION 1: Add multiple students =====
-            // TODO 5: If the roster is full (count == rosterCapacity), print:
-            // "Roster is full. Cannot add more students."
-            // Otherwise:
-            // - remainingSlots = rosterCapacity - count
-            // - Ask how many to add:
-            //   $"How many students do you want to add? (1-{remainingSlots}): "
-            // - Create new arrays sized to the number to add:
-            //   string[] newNames
-            //   int[] newCredits
-            // - Use a for loop to fill the new arrays:
-            //   name prompt: $"Enter name for student {i + 1}: "
-            //   credits prompt: $"Enter credits for {newNames[i]} (0-200): " (range 0-200)
-            // - Copy the new arrays into the roster arrays (use a for loop)
-            // - Print: "Students added."
+            switch (choice)
+            {
+                case 1:
+                    if (count == rosterNames.Length)
+                    {
+                        Console.WriteLine("Roster is full. Cannot add more students.");
+                    }
+                    else
+                    {
+                        int remainingSlots = rosterCapacity - count;
+                        int amountToAdd = ReadIntInRange($"How many students do you want to add? (1-{remainingSlots}): ", 1, remainingSlots);
 
-            // ===== OPTION 2: Print class roster =====
-            // TODO 6: If count is 0, print: "Roster is empty."
-            // Otherwise:
-            // - Build a string[] of lines using BuildRosterLines (TODO 6.1)
-            // - Print header: "Class Roster:"
-            // - Print each line using a foreach loop
+                        string[] newNames = new string[amountToAdd];
+                        int[] newCredits = new int[amountToAdd];
 
+                        for (int i = 0; i < amountToAdd; i++)
+                        {
+                            Console.Write($"Enter name for student {i + 1}: ");
+                            newNames[i] = Console.ReadLine() ?? "";
+                            newCredits[i] = ReadIntInRange($"Enter credits for {newNames[i]} (0-200): ", 0, 200);
+                        }
+                        for (int i = 0; i < amountToAdd; i++)
+                        {
+                            rosterNames[count] = newNames[i];
+                            rosterCredits[count] = newCredits[i];
+                            count++;
+                        }
+                        Console.WriteLine("Students added.");
+                    }
+                    break;
+
+                case 2:
+                    if (count == 0)
+                    {
+                        Console.WriteLine("Roster is empty.");
+                    }
+                    else
+                    {
+                        string[] lines = BuildRosterLines(rosterNames, rosterCredits, count);
+
+                        Console.WriteLine("Class Roster:");
+                        foreach (string line in lines)
+                        {
+                            Console.WriteLine(line);
+                        }
+                    }
+                    break;
+
+                case 3:
+                    if (count == 0)
+                    {
+                        Console.WriteLine("Roster is empty.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sort by:");
+                        Console.WriteLine("1) Name");
+                        Console.WriteLine("2) Credits");
+                        int SortChoice = ReadIntInRange("Choose an option", 1, 2);
+                        CopyUsedRoster(rosterNames, rosterCredits, count, out string[] sortedNames, out int[] sortedCredits);
+                        if (SortChoice == 1)
+                        {
+                            Array.Sort(sortedNames, sortedCredits, StringComparer.OrdinalIgnoreCase);
+                        }
+                        else
+                        {
+                            Array.Sort(sortedCredits, sortedNames);
+                        }
+
+
+                        Console.WriteLine("Class Roster (Sorted):");
+                        foreach (string lines in BuildRosterLines(sortedNames, sortedCredits, sortedNames.Length))
+                        {
+                            Console.WriteLine(lines);
+                        }
+                    }
+                    break;
+                case 4:
+                    Console.WriteLine("Goodbye");
+
+                    break;
+            }
             // ===== OPTION 3: Print roster (sorted) =====
             // TODO 7: If count is 0, print: "Roster is empty."
             // Otherwise:
@@ -109,12 +179,19 @@ public class Program
 
     private static string[] BuildRosterLines(string[] names, int[] credits, int count)
     {
+        string[] lines = new string[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            lines[i] = $"{names[i]} - {credits[i]} credits";
+        }
+
+        return lines;
         // TODO 6.1: Build and return an array of roster lines
         // - Create a string[] sized to count (hint: initialize with new)
         // - Use a for loop to fill it (hint: use index accessor for the variable you just created)
         // - Include BOTH name and credits on each line
-
-        return new string[0]; // Remove this placeholder and replace with the variable to created
+        // Remove this placeholder and replace with the variable to created
     }
 
     private static void CopyUsedRoster(
@@ -128,7 +205,34 @@ public class Program
         // - Create names and credits arrays sized to count
         // - Use a for loop to copy each used element
 
-        names = new string[0];
-        credits = new int[0];
+        names = new string[count];
+        credits = new int[count];
+        for (int i = 0; i < count; i++)
+        {
+            names[i] = sourceNames[i];
+            credits[i] = sourceCredits[i];
+        }
     }
 }
+// ===== OPTION 1: Add multiple students =====
+// TODO 5: If the roster is full (count == rosterCapacity), print:
+// "Roster is full. Cannot add more students."
+// Otherwise:
+// - remainingSlots = rosterCapacity - count
+// - Ask how many to add:
+//   $"How many students do you want to add? (1-{remainingSlots}): "
+// - Create new arrays sized to the number to add:
+//   string[] newNames
+//   int[] newCredits
+// - Use a for loop to fill the new arrays:
+//   name prompt: $"Enter name for student {i + 1}: "
+//   credits prompt: $"Enter credits for {newNames[i]} (0-200): " (range 0-200)
+// - Copy the new arrays into the roster arrays (use a for loop)
+// - Print: "Students added."
+
+// ===== OPTION 2: Print class roster =====
+// TODO 6: If count is 0, print: "Roster is empty."
+// Otherwise:
+// - Build a string[] of lines using BuildRosterLines (TODO 6.1)
+// - Print header: "Class Roster:"
+// - Print each line using a foreach loop
